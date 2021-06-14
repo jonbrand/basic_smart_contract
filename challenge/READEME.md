@@ -7,5 +7,9 @@
     - [x] Cobrar exatamente 0.025 ETH para executar esta função. (pontos 5);
 
 ## Challenge_02
-- [ ] O preço para executar a função duplica cada vez que ela é executada.
-- [ ] Sempre que o preço muda, o contrato dispara um evento informando qual é o novo preço.
+- [x] O preço para executar a função duplica cada vez que ela é executada.
+- [x] Sempre que o preço muda, o contrato dispara um evento informando qual é o novo preço.
+
+## Challenge_03
+- [x] O dono do contrato é dono de todo ETH no contrato e pode sacá-lo.
+- [x] O dono do contrato pode escolher o valor a ser sacado em cada saque.
