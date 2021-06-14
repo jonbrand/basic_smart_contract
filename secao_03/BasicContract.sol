@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.5.2 <0.9.0;
+pragma solidity 0.5.3;
 
 contract HelloWorld {
     // tipo | visibilidade | nome;
@@ -13,6 +13,8 @@ contract HelloWorld {
     bool public answer;
     // mapeamento
     mapping (address => uint) public hasInteracted;
+    // saldo de cada user
+    mapping (address => uint) public balances;
 
 
     // memory: guarda o valor da variavel temporariamente, enquanto a função estiver ativa;
@@ -22,7 +24,10 @@ contract HelloWorld {
     }
 
     // payble valida a função para cobra ether;
-    function setNumber (uint myNumber) public {
+    function setNumber (uint myNumber) public payable {
+        require(msg.value >= 1 ether, "Insufficient ETH sent!");
+        
+        balances[msg.sender] += msg.value;
         number = myNumber;
         setInteracted();
     }
@@ -42,6 +47,20 @@ contract HelloWorld {
     // função de quantas vezes o usuário interage com o contrato;
     function setInteracted() private {
         hasInteracted[msg.sender] += 1;
+    }
+
+    // transferir fundos entre carteiras
+    function sendETH(address payable targetAddress) public payable {
+        targetAddress.transfer(msg.value);
+    }
+
+    // função de saque de fundos ** utilizando a solução do problema da reentracia ***
+    function withdraw() public {
+        require(balances[msg.sender] > 0, "Insufficient founds!");
+
+        uint amount = balances[msg.sender];
+        balances[msg.sender] = 0;
+        msg.sender.transfer(amount);
     }
 
     // operações entre dois valores | funções puras não interagem com a blockchain (são de graça);
